@@ -1,0 +1,188 @@
+﻿@model BOL.tbl_Movie
+
+
+@{
+    ViewBag.Title = "Edit";
+    var MultiSelectedActorList = ViewBag.ActorId;
+}
+<link href="~/appcssstyle.css" rel="stylesheet" />
+
+<h2 class="text-left"> @Model.Name</h2>
+
+
+@using (Html.BeginForm("Edit", "Movie", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <input id="hdnFileUpload" name="hdnFileUpload" type="hidden" value="@Model.Poster" />
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.MovieId)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2 required" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.YearOfRelease, htmlAttributes: new { @class = "control-label col-md-2 required" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.YearOfRelease, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.YearOfRelease, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Plot, htmlAttributes: new { @class = "control-label col-md-2 required" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Plot, htmlAttributes: new { @class = "form-control", @id = "plotField" })
+                @Html.ValidationMessageFor(model => model.Plot, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Poster, htmlAttributes: new { @class = "control-label col-md-2 required" })
+            <div class="col-md-10">
+                <img src="@Url.Content("https://moviedbblobstorage.blob.core.windows.net/sampleimage/"+@Model.Poster)" />
+                @*<input type="file" name="file" id="file" style="width: 100%;" class="form-control" />*@
+                <input type="file" name="photo" />
+                <div class="help-block">Select a new image and click save to replace the old one.</div>
+                @Html.ValidationMessageFor(model => model.Poster, "", new { @class = "text-danger" })
+            </div>
+
+        </div>
+
+        <div class="form-group ">
+            <text class="control-label col-md-2"><strong>Producer Name</strong></text>
+            <div class="col-md-5">
+                @Html.DropDownList("ProducerId", null, htmlAttributes: new { @class = "form-control", @id = "producerList" })
+                @Html.ValidationMessageFor(model => model.ProducerId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.tbl_ActorMovie, "Add Actor", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
+                @Html.ListBox("ActorId", null, htmlAttributes: new { @class = "form-control", @id = "producerList", @multiple = "multiple" })
+                @Html.ValidationMessageFor(model => model.tbl_ActorMovie, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<div class="container">
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Create Actor</h4>
+                </div>
+                <div class="modal-body" id="actorModalBody">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div class="container">
+    <!-- Trigger the modal with a button -->
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal2" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Create Producer</h4>
+                </div>
+                <div class="modal-body" id="producerModalBody">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#actorList').val(1).attr('selected', 'selected');
+    });
+
+    $("#CreateActor").click(function () {
+
+        $.ajax({
+            cache: false,
+            url: '/Actor/Create',
+            contentType: 'application/html; charset=utf-8',
+            type: 'GET',
+            dataType: 'html'
+        }).success(function (data) {
+            $("#actorModalBody").html(data);
+
+        }).error(function () {
+            // Do something with the error
+        });
+    });
+
+
+
+    $(function () {
+        $("#CreateProducer").click(function () {
+
+            $.ajax({
+                cache: false,
+                url: '/Producer/Create',
+                contentType: 'application/html; charset=utf-8',
+                type: 'GET',
+                dataType: 'html'
+            }).success(function (data) {
+                $("#producerModalBody").html(data);
+            }).error(function () {
+                // Do something with the error
+            });
+        });
+    });
+
+</script>

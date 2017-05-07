@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="MovieHubDbModelStoreContainer" CdmEntityContainer="MovieDbEntities">
+    <EntitySetMapping Name="tbl_Actor">
+      <EntityTypeMapping TypeName="MovieHubDbModel.tbl_Actor">
+        <MappingFragment StoreEntitySet="tbl_Actor">
+          <ScalarProperty Name="ActorId" ColumnName="ActorId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="DOB" ColumnName="DOB" />
+          <ScalarProperty Name="Bio" ColumnName="Bio" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_ActorMovie">
+      <EntityTypeMapping TypeName="MovieHubDbModel.tbl_ActorMovie">
+        <MappingFragment StoreEntitySet="tbl_ActorMovie">
+          <ScalarProperty Name="ActorMovieId" ColumnName="ActorMovieId" />
+          <ScalarProperty Name="ActorId" ColumnName="ActorId" />
+          <ScalarProperty Name="MovieId" ColumnName="MovieId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_Movie">
+      <EntityTypeMapping TypeName="MovieHubDbModel.tbl_Movie">
+        <MappingFragment StoreEntitySet="tbl_Movie">
+          <ScalarProperty Name="MovieId" ColumnName="MovieId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="YearOfRelease" ColumnName="YearOfRelease" />
+          <ScalarProperty Name="Plot" ColumnName="Plot" />
+          <ScalarProperty Name="Poster" ColumnName="Poster" />
+          <ScalarProperty Name="ProducerId" ColumnName="ProducerId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_Producer">
+      <EntityTypeMapping TypeName="MovieHubDbModel.tbl_Producer">
+        <MappingFragment StoreEntitySet="tbl_Producer">
+          <ScalarProperty Name="ProducerId" ColumnName="ProducerId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="DOB" ColumnName="DOB" />
+          <ScalarProperty Name="Bio" ColumnName="Bio" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

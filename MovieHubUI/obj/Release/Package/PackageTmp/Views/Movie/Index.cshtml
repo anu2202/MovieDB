@@ -1,0 +1,86 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<BOL.tbl_Movie>
+
+@{
+    ViewBag.Title = "Index";
+}
+<link href="~/content/site.css" rel="stylesheet" />
+<div class="col-md-6">
+    <h2>Index</h2>
+</div>
+
+<div class="col-md-6 text-right"> 
+    <h3 class="border">
+        
+            @Html.ActionLink("Create Movie", "Create", new { @class = "btn btn-default" })
+       
+    </h3>
+</div>
+
+
+@if (Model.Count != 0)
+{
+    <table class="table">
+        <tr>
+            <th class="col-md-1">
+                @Html.DisplayNameFor(model => model.First().Name)
+            </th>
+            <th class="col-md-1">
+                Year Of Release
+            </th>
+            <th class="col-md-2">
+                @Html.DisplayNameFor(model => model.First().Plot)
+            </th>
+            <th class="col-md-2">
+                @Html.DisplayNameFor(model => model.First().Poster)
+            </th>
+            <th class="col-md-2">
+                Producer Name
+            </th>
+            <th class="col-md-2">
+                Actor Name
+            </th>
+            <th class="col-md-2">  </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="col-md-1">
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td class="col-md-1">
+                    @Html.DisplayFor(modelItem => item.YearOfRelease)
+                </td>
+                <td class="col-md-2">
+                    @Html.DisplayFor(modelItem => item.Plot)
+                </td>
+                <td class="col-md-2">
+                    @*@Html.DisplayFor(modelItem => item.Poster)*@
+                    <img src="@Url.Content("https://moviedbblobstorage.blob.core.windows.net/sampleimage/"+item.Poster)" alt="Image" class="resize" />
+                </td>
+                <td class="col-md-2">
+                    @Html.DisplayFor(modelItem => item.tbl_Producer.Name)
+                </td>
+                <td class="col-md-2">
+                    @foreach (var i in item.tbl_ActorMovie)
+                    {
+
+                        <div>&bull; @i.tbl_Actor.Name</div>
+
+                    }
+                </td>
+                <td class="col-md-2">
+                    @Html.ActionLink("Edit", "Edit", new { id = item.MovieId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.MovieId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.MovieId })
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
